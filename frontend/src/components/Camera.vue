@@ -12,17 +12,22 @@ export default {
   data() {
     return {
       snapped: false,
-      context: this.$refs.canvas.getContext('2d')
+      context: null,
+      image: null
     }
   },
   methods: {
     photoSnapped() {
       this.snapped = true
       this.context.drawImage(this.$refs.video, 0, 0, 640, 480)
+      this.image = this.$refs.canvas.toDataURL("image/png")
+      // eslint-disable-next-line
+      console.log(this.image)
     }
   },
 
   mounted() {
+    this.context = this.$refs.canvas.getContext('2d')
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
         this.$refs.video.srcObject = stream
