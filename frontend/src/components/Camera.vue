@@ -2,7 +2,7 @@
 .camera
   video#video(ref="video", width="640", height="480", autoplay)
   .button(@click="photoSnapped")
-    p Snap Photo
+    p(style="user-select: none;") Snap Photo
   canvas#canvas(ref="canvas", v-show="snapped", width="640", height="480")
 </template>
 
@@ -21,6 +21,20 @@ export default {
       this.snapped = true
       this.context.drawImage(this.$refs.video, 0, 0, 640, 480)
       this.image = this.$refs.canvas.toDataURL("image/png")
+      fetch('https://lhd2019.azurewebsites.net/api/PlaySpotifySong?code=/mr/aANgbSyDfxTPANlBPK7k/p1kYQ7LnMa8lfaRId/6N7pNIJu3iw==', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ img: this.image.replace('data:image/png;base64,', '') })
+      }).then(response => {
+        // eslint-disable-next-line
+        console.log(response)
+        return response.text()
+      }).then(url => {
+        window.location = url
+      })
       // eslint-disable-next-line
       console.log(this.image)
     }
@@ -54,6 +68,7 @@ export default {
   margin-bottom: 10px;
   &:hover {
     cursor: pointer;
+    background-color: #85C1E9
   }
 }
 #video {

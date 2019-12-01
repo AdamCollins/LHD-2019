@@ -27,5 +27,6 @@ export default {
 #emoji {
   font-family: Segoe UI Emoji;
   font-size: 3.5em;
+  user-select: none;
 }
 </style>

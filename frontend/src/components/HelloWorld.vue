@@ -2,7 +2,7 @@
 .hello
   h1 {{ msg }}
   .button(v-if="!showCamera", @click="buttonClicked")
-    p Click Me!
+    p(style="user-select: none;") Click Me!
   camera(v-if="showCamera")
 </template>
 
@@ -16,12 +16,34 @@ export default {
   },
   data() {
     return {
-      msg: 'Insert Title Here',
+      msg: 'eMoTiOnS',
       showCamera: false
     }
   },
   methods: {
     buttonClicked() {
+    fetch("https://lhd2019.azurewebsites.net/api/GetSpotifyOuthURL?code=nidsqbrTTU20uP06EHsxoqbzhaFvkC8FFoArDGzurRbqjcdP3IYwgw==",
+      {
+        mode: 'cors',
+        headers: {
+          'Access-Control-Allow-Origin':'*'
+        }
+      }).then(response => {
+      if (response.status !== 200) {
+        return
+      }
+      response.json().then(data => {
+        window.location = data.url
+      })
+      })
+    }
+  },
+  mounted() {
+    const vars = {};
+    window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    if (vars['code']) {
       this.showCamera = true
     }
   }
@@ -38,6 +60,7 @@ export default {
 
   &:hover {
     cursor: pointer;
+    background-color: #85C1E9
   }
 }
 .hello {
